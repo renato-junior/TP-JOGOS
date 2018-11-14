@@ -16,6 +16,10 @@ public class Reversi {
      */
     public static void main(String[] args) {
         System.out.println("Hello World!");
+        GameBoard gb = new GameBoard();
+        gb.initialize();
+        gb.printGameBoardToOutput(System.out);
+        System.out.println(gb.canMove(GameBoard.WHITE));
     }
     
 }

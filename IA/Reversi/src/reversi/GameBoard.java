@@ -5,6 +5,8 @@
  */
 package reversi;
 
+import java.io.PrintStream;
+
 /**
  *
  * @author renato.junior
@@ -66,7 +68,7 @@ public class GameBoard {
                 if (board[i][j] == NONE) {
                     for (int k = -1; k < 2; k++) {
                         for (int l = -1; l < 2; l++) {
-                            if (checkNeighborhood(color, i, j, l, l)) {
+                            if (checkNeighborhood(color, i, j, k, l)) {
                                 return true;
                             }
                         }
@@ -74,6 +76,7 @@ public class GameBoard {
                 }
             }
         }
+        // TODO: Verificar os cantos
         return false;
     }
 
@@ -89,7 +92,7 @@ public class GameBoard {
      * @return se é possível colocar a peça da color color na posição i,j.
      */
     private boolean checkNeighborhood(int color, int i, int j, int iinc, int jinc) {
-        int otherColor = ~color;
+        int otherColor = (color == BLACK ? WHITE : BLACK);
         int k, l;
         boolean executed = false;
 
@@ -104,9 +107,27 @@ public class GameBoard {
         return (executed && board[k][l] == color);
     }
     
+    public void makeMove(int color, int i, int j) {
+        if(this.board[i][j] != NONE) {
+            throw new IllegalArgumentException("Posição inválida!");
+        }
+        // TODO
+    }
+    
     public final void copyBoard(GameBoard game) {
         for (int i = 0; i < BOARD_SIZE; i++) {
             System.arraycopy(game.getBoard()[i], 0, this.board[i], 0, BOARD_SIZE);
+        }
+    }
+    
+    public void printGameBoardToOutput(PrintStream output) {
+        output.println("----------");
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                output.print((this.board[i][j] != NONE ? this.board[i][j] : "x")+" ");
+            }
+            output.println();
+            
         }
     }
 

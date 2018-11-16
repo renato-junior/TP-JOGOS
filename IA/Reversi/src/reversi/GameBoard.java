@@ -106,28 +106,51 @@ public class GameBoard {
         }
         return (executed && board[k][l] == color);
     }
-    
+
     public void makeMove(int color, int i, int j) {
-        if(this.board[i][j] != NONE) {
+        if (this.board[i][j] != NONE) {
             throw new IllegalArgumentException("Posição inválida!");
         }
-        // TODO
+        board[i][j] = color;
+        int otherColor = (color == BLACK ? WHITE : BLACK);
+        for (int k = -1; k < 2; k++) {
+            for (int l = -1; l < 2; l++) {
+                int k1 = i + k;
+                int l1 = j + l;
+                while (board[k1][l1] == otherColor) {
+                    k1 += k;
+                    l1 += l;
+                }
+                if(board[k1][l1] == color) {
+                    // Muda as peças nessa direção para a cor de quem fez a jogada
+                    k1 -= k;
+                    l1 -= l;
+                    while (board[k1][l1] == otherColor) {
+                        board[k1][l1] = color;
+                        k1 -= k;
+                        l1 -= l;
+                    }
+                }
+            }
+        }
     }
-    
+
     public final void copyBoard(GameBoard game) {
         for (int i = 0; i < BOARD_SIZE; i++) {
             System.arraycopy(game.getBoard()[i], 0, this.board[i], 0, BOARD_SIZE);
         }
     }
-    
+
     public void printGameBoardToOutput(PrintStream output) {
         output.println("----------");
+        output.println("  0 1 2 3 4 5 6 7");
         for (int i = 0; i < BOARD_SIZE; i++) {
+            output.print(i+" ");
             for (int j = 0; j < BOARD_SIZE; j++) {
-                output.print((this.board[i][j] != NONE ? this.board[i][j] : "x")+" ");
+                output.print((this.board[i][j] != NONE ? this.board[i][j] : "x") + " ");
             }
             output.println();
-            
+
         }
     }
 

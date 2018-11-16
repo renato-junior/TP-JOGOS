@@ -35,7 +35,11 @@ public class Reversi {
                     int x = new Scanner(System.in).nextInt();
                     System.out.println("Digite a posição Y:");
                     int y = new Scanner(System.in).nextInt();
-                    gb.makeMove(GameBoard.WHITE, x, y);
+                    try {
+                        gb.makeMove(GameBoard.WHITE, x, y);
+                    } catch(IllegalArgumentException ex) {
+                        System.out.println(ex.getLocalizedMessage());
+                    }
                     break;
                 case 2:
                     gb.printGameBoardToOutput(System.out);
@@ -43,7 +47,11 @@ public class Reversi {
                     int xx = new Scanner(System.in).nextInt();
                     System.out.println("Digite a posição Y:");
                     int yy = new Scanner(System.in).nextInt();
-                    gb.makeMove(GameBoard.BLACK, xx, yy);
+                    try {
+                        gb.makeMove(GameBoard.WHITE, xx, yy);
+                    } catch(IllegalArgumentException ex) {
+                        System.out.println(ex.getLocalizedMessage());
+                    }
                     break;
                 case 3:
                     gb.printGameBoardToOutput(System.out);

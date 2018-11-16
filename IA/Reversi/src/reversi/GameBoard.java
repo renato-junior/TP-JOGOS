@@ -66,17 +66,21 @@ public class GameBoard {
         for (int i = 1; i < BOARD_SIZE - 1; i++) {
             for (int j = 1; j < BOARD_SIZE - 1; j++) {
                 if (board[i][j] == NONE) {
-                    for (int k = -1; k < 2; k++) {
-                        for (int l = -1; l < 2; l++) {
-                            if (checkNeighborhood(color, i, j, k, l)) {
-                                return true;
-                            }
-                        }
-                    }
+                    return canMoveFromPosition(color, i, j);
                 }
             }
         }
-        // TODO: Verificar os cantos
+        return false;
+    }
+
+    private boolean canMoveFromPosition(int color, int i, int j) {
+        for (int k = -1; k < 2; k++) {
+            for (int l = -1; l < 2; l++) {
+                if (checkNeighborhood(color, i, j, k, l)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -89,7 +93,7 @@ public class GameBoard {
      * @param j a posição da peça.
      * @param iinc o incremento na vertical.
      * @param jinc o incremento na horizontal.
-     * @return se é possível colocar a peça da color color na posição i,j.
+     * @return se é possível colocar a peça da cor color na posição i,j.
      */
     private boolean checkNeighborhood(int color, int i, int j, int iinc, int jinc) {
         int otherColor = (color == BLACK ? WHITE : BLACK);
@@ -99,16 +103,39 @@ public class GameBoard {
         k = i + iinc;
         l = j + jinc;
 
+        if (!isPositionValid(k, l)) { // Verifica se a posição está fora do tabuleiro
+            return false;
+        }
+
         while (board[k][l] == otherColor) {
             k += iinc;
             l += jinc;
             executed = true;
+
+            if (!isPositionValid(k, l)) { // Verifica se a posição está fora do tabuleiro
+                return false;
+            }
         }
         return (executed && board[k][l] == color);
     }
 
+    /**
+     * Verifica se a posição i,j está dentro do tabuleiro.
+     *
+     * @param i coordenada x da posição que será verificada.
+     * @param j coordenada y da posição que será verificada.
+     * @return true, se a posição for válida, false, caso contrário.
+     */
+    private boolean isPositionValid(int i, int j) {
+        return (i >= 0 && i < BOARD_SIZE) && (j >= 0 && j < BOARD_SIZE);
+    }
+    
+    private boolean isMovePositionValid(int i, int j) {
+        return isPositionValid(i, j) && this.board[i][j] == NONE;
+    }
+
     public void makeMove(int color, int i, int j) {
-        if (this.board[i][j] != NONE) {
+        if (!isMovePositionValid(i, j) || !canMoveFromPosition(color, i, j)) {
             throw new IllegalArgumentException("Posição inválida!");
         }
         board[i][j] = color;
@@ -121,7 +148,7 @@ public class GameBoard {
                     k1 += k;
                     l1 += l;
                 }
-                if(board[k1][l1] == color) {
+                if (board[k1][l1] == color) {
                     // Muda as peças nessa direção para a cor de quem fez a jogada
                     k1 -= k;
                     l1 -= l;
@@ -145,7 +172,7 @@ public class GameBoard {
         output.println("----------");
         output.println("  0 1 2 3 4 5 6 7");
         for (int i = 0; i < BOARD_SIZE; i++) {
-            output.print(i+" ");
+            output.print(i + " ");
             for (int j = 0; j < BOARD_SIZE; j++) {
                 output.print((this.board[i][j] != NONE ? this.board[i][j] : "x") + " ");
             }

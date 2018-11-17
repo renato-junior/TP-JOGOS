@@ -48,7 +48,7 @@ public class Reversi {
                     System.out.println("Digite a posição Y:");
                     int yy = new Scanner(System.in).nextInt();
                     try {
-                        gb.makeMove(GameBoard.WHITE, xx, yy);
+                        gb.makeMove(GameBoard.BLACK, xx, yy);
                     } catch(IllegalArgumentException ex) {
                         System.out.println(ex.getLocalizedMessage());
                     }

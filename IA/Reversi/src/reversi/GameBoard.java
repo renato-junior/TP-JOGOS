@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package reversi;
 
 import java.io.PrintStream;
@@ -63,17 +58,19 @@ public class GameBoard {
         if (color != WHITE && color != BLACK) {
             throw new IllegalArgumentException("Cor inválida!");
         }
-        for (int i = 1; i < BOARD_SIZE - 1; i++) {
-            for (int j = 1; j < BOARD_SIZE - 1; j++) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
                 if (board[i][j] == NONE) {
-                    return canMoveFromPosition(color, i, j);
+                    if (canMoveFromPosition(color, i, j)) {
+                        return true;
+                    }
                 }
             }
         }
         return false;
     }
 
-    private boolean canMoveFromPosition(int color, int i, int j) {
+    public boolean canMoveFromPosition(int color, int i, int j) {
         for (int k = -1; k < 2; k++) {
             for (int l = -1; l < 2; l++) {
                 if (checkNeighborhood(color, i, j, k, l)) {
@@ -129,7 +126,7 @@ public class GameBoard {
     private boolean isPositionValid(int i, int j) {
         return (i >= 0 && i < BOARD_SIZE) && (j >= 0 && j < BOARD_SIZE);
     }
-    
+
     private boolean isMovePositionValid(int i, int j) {
         return isPositionValid(i, j) && this.board[i][j] == NONE;
     }
@@ -144,9 +141,18 @@ public class GameBoard {
             for (int l = -1; l < 2; l++) {
                 int k1 = i + k;
                 int l1 = j + l;
+                if (!isPositionValid(k1, l1)) { 
+                    continue;
+                }
                 while (board[k1][l1] == otherColor) {
                     k1 += k;
                     l1 += l;
+                    if (!isPositionValid(k1, l1)) { 
+                        break;
+                    }
+                }
+                if (!isPositionValid(k1, l1)) { 
+                    continue;
                 }
                 if (board[k1][l1] == color) {
                     // Muda as peças nessa direção para a cor de quem fez a jogada
@@ -164,7 +170,9 @@ public class GameBoard {
 
     public final void copyBoard(GameBoard game) {
         for (int i = 0; i < BOARD_SIZE; i++) {
-            System.arraycopy(game.getBoard()[i], 0, this.board[i], 0, BOARD_SIZE);
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                this.board[i][j] = game.getBoard()[i][j];
+            }
         }
     }
 
@@ -179,6 +187,29 @@ public class GameBoard {
             output.println();
 
         }
+    }
+
+    public double countPlayerStones(int playerColor) {
+        double stoneCount = 0;
+        for (int i = 0; i < GameBoard.BOARD_SIZE; i++) {
+            for (int j = 0; j < GameBoard.BOARD_SIZE; j++) {
+                if (board[i][j] == playerColor) {
+                    stoneCount++;
+                }
+            }
+        }
+        return stoneCount;
+    }
+
+    public boolean isBoardFull() {
+        for (int i = 0; i < GameBoard.BOARD_SIZE; i++) {
+            for (int j = 0; j < GameBoard.BOARD_SIZE; j++) {
+                if (board[i][j] == NONE) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public int[][] getBoard() {

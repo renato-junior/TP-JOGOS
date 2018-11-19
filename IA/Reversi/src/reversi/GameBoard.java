@@ -71,8 +71,14 @@ public class GameBoard {
     }
 
     public boolean canMoveFromPosition(int color, int i, int j) {
+        if(!isMovePositionValid(i, j)) {
+            return false;
+        }
         for (int k = -1; k < 2; k++) {
             for (int l = -1; l < 2; l++) {
+                if(k==0 && l == 0) {
+                    continue;
+                }
                 if (checkNeighborhood(color, i, j, k, l)) {
                     return true;
                 }
@@ -132,7 +138,7 @@ public class GameBoard {
     }
 
     public void makeMove(int color, int i, int j) {
-        if (!isMovePositionValid(i, j) || !canMoveFromPosition(color, i, j)) {
+        if (!canMoveFromPosition(color, i, j)) {
             throw new IllegalArgumentException("Posição inválida!");
         }
         board[i][j] = color;

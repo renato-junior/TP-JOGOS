@@ -39,6 +39,7 @@ public class Reversi {
                         gb.makeMove(GameBoard.BLACK, x, y);
                         System.out.println("IA irá jogar agora!");
                         Position aiMove = ai.computeNextMove(gb);
+                        System.out.println("IA MOVE: "+aiMove.getI()+" "+aiMove.getJ());
                         gb.makeMove(GameBoard.WHITE, aiMove.getI(), aiMove.getJ());
                         System.out.println("IA jogou!");
                         gb.printGameBoardToOutput(System.out);

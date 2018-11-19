@@ -36,11 +36,11 @@ public class AI {
     private double maxValue(GameBoard gameBoard, int treeDepth, double alpha, double beta) {
         System.out.println("max called");
         if (treeDepth >= MAX_TREE_DEPTH || !isThereTime() || isGameOver(gameBoard)) {
-            System.out.println("entrei max");
+            System.out.println("max ended");
             return evaluateGameBoard(gameBoard);
         }
         if (!gameBoard.canMove(aiColor)) { // Passa a jogada se não puder mover
-            System.out.println("entrei max 2");
+            System.out.println("max ended");
             return minValue(gameBoard, treeDepth + 1, alpha, beta);
         }
         GameBoard gameBoardCopy = new GameBoard(gameBoard);
@@ -52,7 +52,6 @@ public class AI {
             for (int j = 0; j < GameBoard.BOARD_SIZE; j++) {
                 pos = new Position(i, j);
                 if (gameBoardCopy.canMoveFromPosition(aiColor, i, j)) {
-                    System.out.println("MOVE max: "+i+" "+j);
                     gameBoardCopy.makeMove(aiColor, i, j);
 
                     alpha = minValue(gameBoardCopy, treeDepth + 1, alpha, beta);
@@ -76,11 +75,12 @@ public class AI {
     private double minValue(GameBoard gameBoard, int treeDepth, double alpha, double beta) {
         System.out.println("min called");
         if (treeDepth >= MAX_TREE_DEPTH || !isThereTime() || isGameOver(gameBoard)) {
-            System.out.println("entrei min");
+            System.out.println("min ended");
             return evaluateGameBoard(gameBoard);
         }
         int enemyColor = getEnemyColor();
         if (!gameBoard.canMove(enemyColor)) {
+            System.out.println("min ended");
             return maxValue(gameBoard, treeDepth + 1, alpha, beta);
         }
         GameBoard gameBoardCopy = new GameBoard(gameBoard);
@@ -89,11 +89,10 @@ public class AI {
             for (int j = 0; j < GameBoard.BOARD_SIZE; j++) {
                 pos = new Position(i, j);
                 if (gameBoardCopy.canMoveFromPosition(enemyColor, i, j)) {
-                    System.out.println("MOVE min: "+i+" "+j);
+//                    System.out.println("MIN MAKE MOVE: "+i+" "+j);
+//                    gameBoard.printGameBoardToOutput(System.out);
                     gameBoardCopy.makeMove(enemyColor, i, j);
-                    System.out.println("oi2");
                     beta = Math.min(beta, maxValue(gameBoardCopy, treeDepth + 1, alpha, beta));
-                    System.out.println("oi4");
                 }
                 if (beta <= alpha) {
                     break;

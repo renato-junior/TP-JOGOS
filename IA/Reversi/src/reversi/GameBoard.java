@@ -217,6 +217,16 @@ public class GameBoard {
         }
         return true;
     }
+    
+    public boolean isGameOver() {
+        if (isBoardFull()) {
+            return true;
+        }
+        if (canMove(BLACK) || canMove(WHITE)) {
+            return false;
+        }
+        return true;
+    }
 
     public int[][] getBoard() {
         return board;

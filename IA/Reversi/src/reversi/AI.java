@@ -115,13 +115,7 @@ public class AI {
     }
 
     private boolean isGameOver(GameBoard gb) {
-        if (gb.isBoardFull()) {
-            return true;
-        }
-        if (gb.canMove(GameBoard.BLACK) || gb.canMove(GameBoard.WHITE)) {
-            return false;
-        }
-        return true;
+        return gb.isGameOver();
     }
 
 }

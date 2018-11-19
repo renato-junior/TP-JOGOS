@@ -14,6 +14,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import reversi.GameBoard;
 import reversi.GameController;
 
@@ -24,13 +25,13 @@ import reversi.GameController;
 public class GUI extends Frame implements MouseListener {
 
     private GameController gameController;
-    
+
     public static final int X_PADDING = 200;
     public static final int Y_PADDING = 50;
     public static final int BOARD_SIZE = 400;
 
     public GUI(GameController gc) {
-        super("Reversi v1.1a");
+        super("Reversi");
         setSize(800, 600);
 
         addWindowListener(new WindowAdapter() {
@@ -49,6 +50,7 @@ public class GUI extends Frame implements MouseListener {
 
     @Override
     public void paint(Graphics g) {
+        super.paint(g);
         drawBoardLines(g);
         drawBoardStones(g);
     }
@@ -107,23 +109,34 @@ public class GUI extends Frame implements MouseListener {
         // Obtém as coordenadas do clique
         int x = e.getX();
         int y = e.getY();
-        if(isClickInsideBoard(x, y)) {
+        if (isClickInsideBoard(x, y)) {
             // Calcula qual é a posição da matriz correspondente
-            int i = ((y - Y_PADDING) - ((y - Y_PADDING)%50))/50;
-            int j = ((x - X_PADDING) - ((x - X_PADDING)%50))/50;
-            System.out.println("I: "+i+" J: "+j);
+            int i = ((y - Y_PADDING) - ((y - Y_PADDING) % 50)) / 50;
+            int j = ((x - X_PADDING) - ((x - X_PADDING) % 50)) / 50;
+            System.out.println("I: " + i + " J: " + j);
             gameController.play(i, j);
             this.paint(this.getGraphics());
+            if (gameController.getGameBoard().isGameOver()) {
+                int black = (int) gameController.getGameBoard().countPlayerStones(GameBoard.BLACK);
+                int white = (int) gameController.getGameBoard().countPlayerStones(GameBoard.WHITE);
+                if (black > white) {
+                    JOptionPane.showMessageDialog(this, "Preto ganhou com " + black + " peças!", "Fim de Jogo", JOptionPane.INFORMATION_MESSAGE);
+                } else if (white > black) {
+                    JOptionPane.showMessageDialog(this, "Branco ganhou com " + white + " peças!", "Fim de Jogo", JOptionPane.INFORMATION_MESSAGE);
+                } else if (white == black) {
+                    JOptionPane.showMessageDialog(this, "Empate!", "Fim de Jogo", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
         }
     }
-    
+
     private boolean isClickInsideBoard(int x, int y) {
-        return x >= X_PADDING && x <= (X_PADDING+BOARD_SIZE) && y >= Y_PADDING && y <= (Y_PADDING+BOARD_SIZE);
+        return x >= X_PADDING && x <= (X_PADDING + BOARD_SIZE) && y >= Y_PADDING && y <= (Y_PADDING + BOARD_SIZE);
     }
-    
+
     public void displayError(int i, int j) {
-        int x = X_PADDING + j*50;
-        int y = Y_PADDING + i*50;
+        int x = X_PADDING + j * 50;
+        int y = Y_PADDING + i * 50;
         Graphics2D g2d = (Graphics2D) getGraphics();
         g2d.setColor(Color.red);
         g2d.fill(new Rectangle(x, y, 50, 50));

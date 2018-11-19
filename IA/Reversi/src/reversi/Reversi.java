@@ -1,11 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package reversi;
-
-import java.util.Scanner;
 
 /**
  *
@@ -54,8 +47,7 @@ public class Reversi {
 //
 //            }
 //        }
-        
-        
+
 //        while (true) {
 //            System.out.println("Reversi v. Alpha 1");
 //            System.out.println("Selecione a opção: ");

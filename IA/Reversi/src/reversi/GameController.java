@@ -1,5 +1,7 @@
 package reversi;
 
+import gui.GUI;
+
 /**
  *
  * @author renato
@@ -23,9 +25,9 @@ public class GameController {
             Position aiMove = ai.computeNextMove(gameBoard);
             System.out.println("IA MOVE: " + aiMove.getI() + " " + aiMove.getJ());
             gameBoard.makeMove(GameBoard.WHITE, aiMove.getI(), aiMove.getJ());
-//            gb.printGameBoardToOutput(System.out);
         } catch (IllegalArgumentException ex) {
             System.out.println(ex.getLocalizedMessage());
+            gui.displayError(x, y);
         }
     }
 

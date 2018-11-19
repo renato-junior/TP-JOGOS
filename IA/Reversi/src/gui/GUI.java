@@ -1,15 +1,21 @@
-package reversi;
+package gui;
 
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import reversi.GameBoard;
+import reversi.GameController;
 
 /**
  *
@@ -113,6 +119,19 @@ public class GUI extends Frame implements MouseListener {
     
     private boolean isClickInsideBoard(int x, int y) {
         return x >= X_PADDING && x <= (X_PADDING+BOARD_SIZE) && y >= Y_PADDING && y <= (Y_PADDING+BOARD_SIZE);
+    }
+    
+    public void displayError(int i, int j) {
+        int x = X_PADDING + j*50;
+        int y = Y_PADDING + i*50;
+        Graphics2D g2d = (Graphics2D) getGraphics();
+        g2d.setColor(Color.red);
+        g2d.fill(new Rectangle(x, y, 50, 50));
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+        }
+        g2d.clearRect(x, y, 50, 50);
     }
 
     @Override

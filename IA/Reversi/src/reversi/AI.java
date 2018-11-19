@@ -2,18 +2,18 @@ package reversi;
 
 /**
  * Classe que controla a Inteligência Artificial do jogo.
+ * A IA irá maximizar o valor.
  *
  * @author renato
  */
 public class AI {
 
-    private final int MAX_TREE_DEPTH = 4;
-
-    private long timeout;
-    private int aiColor;
-
     private long startTime;
     private Position bestMove;
+    private final int aiColor;
+    private final long timeout;
+
+    private final int MAX_TREE_DEPTH = 4;
 
     public AI(int color, long timeout) {
         this.aiColor = color;
@@ -102,10 +102,6 @@ public class AI {
         return aiCount - enemyCount;
     }
 
-    private int getEnemyColor() {
-        return (this.aiColor == GameBoard.BLACK) ? GameBoard.WHITE : GameBoard.BLACK;
-    }
-
     private boolean isThereTime() {
         if ((timeout - (System.currentTimeMillis() - startTime)) > 0) {
             return true;
@@ -116,6 +112,10 @@ public class AI {
 
     private boolean isGameOver(GameBoard gb) {
         return gb.isGameOver();
+    }
+
+    private int getEnemyColor() {
+        return (this.aiColor == GameBoard.BLACK) ? GameBoard.WHITE : GameBoard.BLACK;
     }
 
 }

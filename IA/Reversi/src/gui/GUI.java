@@ -11,9 +11,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import reversi.GameBoard;
 import reversi.GameController;
@@ -33,6 +30,7 @@ public class GUI extends Frame implements MouseListener {
     public GUI(GameController gc) {
         super("Reversi");
         setSize(800, 600);
+        setResizable(false);
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
